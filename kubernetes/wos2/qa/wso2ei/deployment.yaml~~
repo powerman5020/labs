@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wso2ei
+  namespace: calidad
+spec:
+  selector:
+    matchLabels:
+      app: wso2ei
+  template:
+    metadata:
+      labels:
+        app: wso2ei
+    spec:
+      nodeSelector:
+        nombre: qa1
+      containers:
+      - image: wso2ei:1
+        name: wso2ei
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: "1"
+          limits:
+            memory: 4Gi
+            cpu: "2"
+        env:
+        - name: DB_USER
+          value: wso2carbon
+        - name: DB_PASSWORD
+          value: e9vb2b2BsF8VdCGdUAUyhbRmqAZmMyqh
+        - name: DB_NAME
+          value: wso2carbon_db
+        ports:
+        - containerPort: 8280
+          name: port1
+        - containerPort: 8243
+          name: port2
+        - containerPort: 9443
+          name: port3
+        - containerPort: 4100
+          name: port4

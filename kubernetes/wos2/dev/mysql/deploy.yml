@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: develop
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      nodeSelector:
+        nombre: dev1
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: "1"
+          limits:
+            memory: 2Gi
+            cpu: "2"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: YxE86SQWkrzj7x6hwBpNDLPk6rgPeSpj
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
